@@ -3,4 +3,5 @@
     <string name="test_py">run text.py</string>
     <string name="textview">Response</string>
     <string name="webview">WebView</string>
+    <string name="reset">Light UP</string>
 </resources>

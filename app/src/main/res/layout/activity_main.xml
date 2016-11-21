@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -18,11 +19,10 @@
 
     </WebView>
 
-    <TextView
-        android:text="@string/textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3" />
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/resultColor" />
 
     <Button
         android:layout_width="wrap_content"
@@ -31,8 +31,8 @@
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="runScript"
-        android:text="Light UP"
+        android:onClick="reset_LED"
+        android:text="@string/reset"
         android:background="@android:drawable/btn_default" />
 
     <SeekBar
@@ -58,8 +58,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:max="255"
-        android:progress="1"
-        android:progressBackgroundTint="@color/colorPrimary" />
+        android:progress="3"
+        android:progressBackgroundTint="@color/colorPrimary"
+        android:layout_marginTop="20dip" />
 
     <SeekBar
         android:layout_width="wrap_content"
