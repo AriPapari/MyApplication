@@ -11,33 +11,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gecaj.arianit.myapplication.MainActivity">
 
+
+
     <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/webview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible" >
+        android:visibility="gone" >
 
     </WebView>
 
-    <SurfaceView
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/resultColor" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="42dp"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:onClick="reset_LED"
-        android:text="@string/reset"
-        android:background="@android:drawable/btn_default" />
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/listColor"
+        android:id="@+id/colorList" />
+
+
+    <SurfaceView
+        android:layout_height="50dp"
+        android:id="@+id/listColor"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/blue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
         android:id="@+id/green"
         android:layout_above="@+id/red"
         android:layout_alignParentLeft="true"
@@ -50,7 +57,8 @@
 
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
         android:id="@+id/blue"
         android:layout_above="@+id/green"
         android:layout_alignParentLeft="true"
@@ -58,13 +66,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:max="255"
-        android:progress="3"
-        android:progressBackgroundTint="@color/colorPrimary"
-        android:layout_marginTop="20dip" />
+        android:progress="1"
+        android:progressBackgroundTint="@color/colorPrimary"/>
 
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
         android:id="@+id/red"
         android:max="255"
         android:progress="1"
@@ -77,16 +85,49 @@
 
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
         android:id="@+id/white"
-        android:layout_marginBottom="29dp"
-        android:layout_above="@+id/button"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:max="255"
         android:progress="1"
-        android:progressBackgroundTint="@android:color/background_light" />
+        android:progressBackgroundTint="@android:color/background_light"
+        android:layout_above="@+id/buttonFrame"/>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonFrame">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/button"
+            android:onClick="reset_LED"
+            android:text="@string/reset"
+            android:background="@android:drawable/btn_default"
+            android:layout_weight="67.81"
+            android:gravity="center" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addColor"
+            android:background="@android:drawable/btn_default"
+            android:text="@string/add_color"
+            android:layout_weight="62.46"
+            android:gravity="center"
+            android:onClick="add_Color" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>
