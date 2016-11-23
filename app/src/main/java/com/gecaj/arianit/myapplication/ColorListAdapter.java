@@ -2,8 +2,10 @@ package com.gecaj.arianit.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,12 @@ public class ColorListAdapter extends ArrayAdapter{
         int white = colorList.get(position)[3];
 
         SurfaceView resultColor = (SurfaceView) convertView.findViewById(R.id.listColor);
+        //SurfaceView transparency
+        resultColor.setZOrderOnTop(true);    // necessary
+        SurfaceHolder sfhTrackHolder = resultColor.getHolder();
+        sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
 
-        resultColor.setBackgroundColor(Color.rgb(red,green,blue));
+        resultColor.setBackgroundColor(Color.argb(255-white,red,green,blue));
 
         return convertView;
     }

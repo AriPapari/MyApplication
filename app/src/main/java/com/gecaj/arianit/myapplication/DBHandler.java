@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper{
 
-    private static final String LOG_TAG = MainActivity.class.toString();
+    private static final String LOG_TAG = ColorActivity.class.toString();
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "colorList.db";
     public static final String TABLE_COLORS = "colorList";
@@ -47,7 +47,7 @@ public class DBHandler extends SQLiteOpenHelper{
     }
 
     //Add Color to db
-    public boolean addColor(int[] rgb){
+    public void addColor(int[] rgb){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_RED, rgb[0]);
@@ -57,12 +57,8 @@ public class DBHandler extends SQLiteOpenHelper{
 
         long result = db.insert(TABLE_COLORS, null, values);
         Log.i(LOG_TAG, "++++++ COLOR R"+rgb[0]+" G"+rgb[1]+" B"+rgb[2]+" W"+rgb[3]+" ADDED +++++++ result = "+ result);
-        if(result == -1) {
-            return true;    //insert success
-        }
-        else
-            return false;   //insert fail
     }
+
     //Delete all Data
     public void deleteData(){
         SQLiteDatabase db = getWritableDatabase();
@@ -71,23 +67,25 @@ public class DBHandler extends SQLiteOpenHelper{
         Log.i(LOG_TAG, "-------- TABLE DELETED ------");
     }
 
-    //Delete Color from db
+    /*/Delete Color from db
     public void deleteColor(int pos){
         Log.i(LOG_TAG, "-------- delete COLOR called ------");
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_COLORS + " WHERE " + COLUMN_POS + "=" + pos + ";");
         Log.i(LOG_TAG, "-------- COLOR DELETED ------");
-    }
+    }*/
 
-    //allData
+    //get Cursor/allData
     public Cursor getAllData(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor result = db.rawQuery("SELECT * FROM " + TABLE_COLORS ,null);
         return result;
     }
 
+    /*
     public void dropIt(){
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DROP TABLE "+TABLE_COLORS);
     }
+    */
 }

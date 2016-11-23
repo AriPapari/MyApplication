@@ -4,4 +4,5 @@
     <item name="buttonFrame" type="id">Button Frame</item>
     <item name="addColor" type="id">addColor</item>
     <item name="colorList" type="id">colorList</item>
+    <item name="textBrightness" type="id">Brightness:</item>
 </resources>

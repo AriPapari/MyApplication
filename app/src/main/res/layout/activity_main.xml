@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.gecaj.arianit.myapplication.MainActivity">
+    tools:context="com.gecaj.arianit.myapplication.ColorActivity">
 
 
 
@@ -29,7 +29,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/listColor"
-        android:id="@+id/colorList" />
+        android:id="@+id/colorList"
+        android:divider="@color/transparent" />
 
 
     <SurfaceView
@@ -38,7 +39,8 @@
         android:layout_width="match_parent"
         android:layout_above="@+id/blue"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/transparent" />
 
 
     <SeekBar
@@ -76,16 +78,25 @@
         android:id="@+id/red"
         android:max="255"
         android:progress="1"
-        android:layout_above="@+id/white"
+        android:layout_above="@+id/textBrightness"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:progressBackgroundTint="@android:color/holo_red_light" />
 
+    <TextView
+        android:text="Brightness:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textBrightness"
+        android:layout_above="@+id/white"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_height="30dp"
         android:id="@+id/white"
         android:layout_marginBottom="10dp"
@@ -109,7 +120,6 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:id="@+id/button"
             android:onClick="reset_LED"
             android:text="@string/reset"
