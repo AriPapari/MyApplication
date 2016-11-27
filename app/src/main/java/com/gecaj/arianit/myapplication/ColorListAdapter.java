@@ -27,8 +27,8 @@ public class ColorListAdapter extends ArrayAdapter{
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater buckyInflater = LayoutInflater.from(getContext());
-        convertView = buckyInflater.inflate(R.layout.color_list,parent,false);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        convertView = inflater.inflate(R.layout.color_list,parent,false);
 
         int red = colorList.get(position)[0];
         int green = colorList.get(position)[1];
@@ -41,7 +41,7 @@ public class ColorListAdapter extends ArrayAdapter{
         SurfaceHolder sfhTrackHolder = resultColor.getHolder();
         sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
 
-        resultColor.setBackgroundColor(Color.argb(255-white,red,green,blue));
+        resultColor.setBackgroundColor(Color.argb(255-white,(int)(red*0.3),(int)(green*0.6),(int)(blue*0.1)));
 
         return convertView;
     }
