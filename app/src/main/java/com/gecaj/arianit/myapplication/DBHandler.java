@@ -15,7 +15,7 @@ import android.util.Log;
 public class DBHandler extends SQLiteOpenHelper{
 
     private static final String LOG_TAG = ColorActivity.class.toString();
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "colorList.db";
     public static final String TABLE_COLORS = "colorList";
     public static final String COLUMN_POS ="_pos";
@@ -23,6 +23,7 @@ public class DBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_GREEN ="_green";
     public static final String COLUMN_BLUE ="_blue";
     public static final String COLUMN_WHITE ="_white";
+    public static final String COLUMN_BRIGHT ="_brightness";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -32,10 +33,11 @@ public class DBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String query = "CREATE TABLE " + TABLE_COLORS + "(" +
                 COLUMN_POS + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_RED + " INTEGER, " +
-                COLUMN_GREEN + " INTEGER, " +
-                COLUMN_BLUE + " INTEGER, " +
-                COLUMN_WHITE + " INTEGER " +
+                COLUMN_RED + " DOUBLE, " +
+                COLUMN_GREEN + " DOUBLE, " +
+                COLUMN_BLUE + " DOUBLE, " +
+                COLUMN_WHITE + " DOUBLE, " +
+                COLUMN_BRIGHT + " DOUBLE " +
                 ")";
         sqLiteDatabase.execSQL(query);
     }
@@ -47,16 +49,17 @@ public class DBHandler extends SQLiteOpenHelper{
     }
 
     //Add Color to db
-    public void addColor(int[] rgb){
+    public void addColor(double[] rgb){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_RED, rgb[0]);
         values.put(COLUMN_GREEN, rgb[1]);
         values.put(COLUMN_BLUE, rgb[2]);
         values.put(COLUMN_WHITE, rgb[3]);
+        values.put(COLUMN_BRIGHT, rgb[4]);
 
         long result = db.insert(TABLE_COLORS, null, values);
-        Log.i(LOG_TAG, "++++++ COLOR R"+rgb[0]+" G"+rgb[1]+" B"+rgb[2]+" W"+rgb[3]+" ADDED +++++++ result = "+ result);
+        Log.i(LOG_TAG, "++++++ COLOR R"+rgb[0]+" G"+rgb[1]+" B"+rgb[2]+" W"+rgb[3]+" BRIGHT"+rgb[4]+" ADDED +++++++ result = "+ result);
     }
 
     //Delete all Data

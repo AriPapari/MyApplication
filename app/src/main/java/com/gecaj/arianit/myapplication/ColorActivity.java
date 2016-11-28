@@ -2,10 +2,8 @@ package com.gecaj.arianit.myapplication;
 
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.webkit.WebView;
@@ -20,45 +18,43 @@ import android.util.Log;
 public class ColorActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = ColorActivity.class.toString();
+    public static final int DB_VERSION = 2;
     private WebView myWebView;
-    private SeekBar red, green, blue, white;
+    private SeekBar red, green, blue, white, brightness;
     private int i_red = 0, i_green = 0, i_blue = 0, i_white = 0;
     private int tr =0, tg=0,tb=0,tw=0;
-    private double i_bright;
+    private double i_bright = 1.0;
     private SurfaceView resultColor;
     private ListView colorList;
     private ArrayAdapter adapter;
-    private int[] rgb;
-    private ArrayList<int[]> itemList;
+    private double[] rgb;
+    private ArrayList<double[]> itemList;
     private DBHandler dbHandler;
+    private final double[] adjustedColors = new double[] {1.0,0.55,1.0};
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        dbHandler = new DBHandler(this,null,null,1);
+        setContentView(R.layout.color_activity);
+        dbHandler = new DBHandler(this,null,null, DB_VERSION);
         final Cursor result = dbHandler.getAllData();
         myWebView  = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("http://raspberrypi/php/start_LED.php");
         red = (SeekBar) findViewById(R.id.red);
         green = (SeekBar) findViewById(R.id.green);
         blue = (SeekBar) findViewById(R.id.blue);
+        brightness = (SeekBar) findViewById(R.id.bright);
         white = (SeekBar) findViewById(R.id.white);
         resultColor =  (SurfaceView) findViewById(R.id.listColor);
         colorList = (ListView) findViewById(R.id.colorList);
         itemList = new ArrayList<>();
 
-        //SurfaceView transparency
-        resultColor.setZOrderOnTop(true);    // necessary
-        SurfaceHolder sfhTrackHolder = resultColor.getHolder();
-        sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
-
-
         //reading from DB
         if(result.getCount() != 0){
             while(result.moveToNext()){
-                itemList.add(new int[]{result.getInt(1),result.getInt(2),result.getInt(3),result.getInt(4)});
+                itemList.add(new double[]{result.getDouble(1),result.getDouble(2),result.getDouble(3),result.getDouble(4),result.getDouble(5)});
             }
         }
         adapter = new ColorListAdapter(ColorActivity.this,R.layout.color_list, itemList);
@@ -70,10 +66,8 @@ public class ColorActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 i_red = i;
                 tr = (int)(i_bright*i_red);
-                tg = (int)(i_bright*i_green);
-                tb = (int)(i_bright*i_blue);
-                tw = (int)(i_bright*i_white);
                 set_resultColor(tr,tg,tb,tw);
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -83,7 +77,6 @@ public class ColorActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
 
             }
         });
@@ -91,11 +84,9 @@ public class ColorActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 i_green = i;
-                tr = (int)(i_bright*i_red);
                 tg = (int)(i_bright*i_green);
-                tb = (int)(i_bright*i_blue);
-                tw = (int)(i_bright*i_white);
                 set_resultColor(tr,tg,tb,tw);
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -104,7 +95,6 @@ public class ColorActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
 
             }
         });
@@ -112,11 +102,9 @@ public class ColorActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 i_blue = i;
-                tr = (int)(i_bright*i_red);
-                tg = (int)(i_bright*i_green);
                 tb = (int)(i_bright*i_blue);
-                tw = (int)(i_bright*i_white);
                 set_resultColor(tr,tg,tb,tw);
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -126,11 +114,29 @@ public class ColorActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
 
             }
         });
         white.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                i_white = i;
+                tw = i_white;
+                set_resultColor(tr,tg,tb,tw);
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 i_bright = i;
@@ -139,9 +145,7 @@ public class ColorActivity extends AppCompatActivity {
                 tr = (int)(i_bright*i_red);
                 tg = (int)(i_bright*i_green);
                 tb = (int)(i_bright*i_blue);
-                tw = (int)(i_bright*i_white);
                 set_resultColor(tr,tg,tb,tw);
-                refresh_progress();
             }
 
             @Override
@@ -150,7 +154,6 @@ public class ColorActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
 
             }
         });
@@ -159,11 +162,13 @@ public class ColorActivity extends AppCompatActivity {
         colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                i_red = itemList.get(i)[0];
-                i_green = itemList.get(i)[1];
-                i_blue = itemList.get(i)[2];
-                i_white = itemList.get(i)[3];
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+i_red+"&green="+i_green+"&blue="+i_blue+"&white="+i_white);
+                i_red = (int)itemList.get(i)[0];
+                i_green = (int)itemList.get(i)[1];
+                i_blue = (int)itemList.get(i)[2];
+                i_white = (int)itemList.get(i)[3];
+                i_bright = itemList.get(i)[4];
+                Log.i(LOG_TAG, "ONCLICK >>> i_bright="+i_bright+" red="+i_red+" green="+i_green+" blue="+i_blue+" white="+i_white);
+                set_resultColor((int)(i_red*i_bright),(int)(i_green*i_bright),(int)(i_blue*i_bright),i_white);
                 refresh_progress();
             }
         });
@@ -182,12 +187,17 @@ public class ColorActivity extends AppCompatActivity {
         });
 
     }
+    public double[] getAdjustedColors(){
+        return adjustedColors;
+    }
 
     //refresh seekbars
     private void refresh_progress(){
-        red.setProgress(tr);
-        green.setProgress(tg);
-        blue.setProgress(tb);
+        red.setProgress(i_red);
+        green.setProgress(i_green);
+        blue.setProgress(i_blue);
+        white.setProgress(i_white);
+        brightness.setProgress((int)(i_bright*100));
     }
 
     //turn off all LEDs
@@ -200,19 +210,21 @@ public class ColorActivity extends AppCompatActivity {
 
 
     private void set_resultColor(int red, int green, int blue, int white){
-        red = (int)(0.7*red);
-        green = (int)(1.0*green);
-        blue = (int)(0.9*blue);
+        myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+red+"&green="+green+"&blue="+blue+"&white="+white);
+        red = (int)(adjustedColors[0]*red);
+        green = (int)(adjustedColors[1]*green);
+        blue = (int)(adjustedColors[2]*blue);
         Log.i(LOG_TAG, ">>> i_bright="+i_bright+" red="+red+" green="+green+" blue="+blue+" white="+white);
-        resultColor.setBackgroundColor(Color.argb(255-white,red,green,blue));
+        resultColor.setBackgroundColor(Color.rgb(red,green,blue));
 
     }
 
-    //add Color to itemList + DB
     public void add_Color(View view){
-        rgb = new int[] {i_red,i_green,i_blue,i_white};
+        //add Color to itemList + DB
+        rgb = new double[] {i_red,i_green,i_blue,i_white,i_bright};
         itemList.add(rgb);
         dbHandler.addColor(rgb);
+        //refresh list
         adapter = new ColorListAdapter(ColorActivity.this,R.layout.color_list, itemList);
         colorList.setAdapter(adapter);
     }
