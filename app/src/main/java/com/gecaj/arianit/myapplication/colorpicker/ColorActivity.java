@@ -1,4 +1,4 @@
-package com.gecaj.arianit.myapplication;
+package com.gecaj.arianit.myapplication.colorpicker;
 
 import android.database.Cursor;
 import android.graphics.Color;
@@ -14,6 +14,9 @@ import android.widget.SeekBar;
 import java.util.ArrayList;
 
 import android.util.Log;
+
+import com.gecaj.arianit.myapplication.DB.DBHandler;
+import com.gecaj.arianit.myapplication.R;
 
 public class ColorActivity extends AppCompatActivity {
 
@@ -37,7 +40,7 @@ public class ColorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.color_activity);
+        setContentView(R.layout.activity_colorpicker);
         dbHandler = new DBHandler(this,null,null, DB_VERSION);
         final Cursor result = dbHandler.getAllData();
         myWebView  = (WebView) findViewById(R.id.webview);
