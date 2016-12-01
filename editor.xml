@@ -1,0 +1,7 @@
+<application>
+  <component name="TodoConfiguration">
+    <filter name="Todo">
+      <pattern index="0" />
+    </filter>
+  </component>
+</application>
