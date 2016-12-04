@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <SurfaceView
+        android:layout_height="match_parent"
+        android:id="@+id/listColor"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/blue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/transparent" />
+
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        android:id="@+id/green"
+        android:layout_above="@+id/red"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:max="255"
+        android:progress="0"
+        android:progressBackgroundTint="@android:color/holo_green_light" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        android:id="@+id/blue"
+        android:layout_above="@+id/green"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:max="255"
+        android:progress="0"
+        android:progressBackgroundTint="@color/colorPrimary"/>
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        android:id="@+id/red"
+        android:max="255"
+        android:progress="0"
+        android:layout_above="@+id/white"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:progressBackgroundTint="@android:color/holo_red_light" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        android:id="@+id/white"
+        android:max="255"
+        android:progress="0"
+        android:layout_above="@+id/textBrightness"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:progressBackgroundTint="@android:color/darker_gray"/>
+
+    <TextView
+        android:text="Brightness:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textBrightness"
+        android:layout_above="@+id/bright"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:id="@+id/bright"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:max="100"
+        android:progress="100"
+        android:progressBackgroundTint="@android:color/background_dark"
+        android:layout_above="@+id/buttonFrame"
+        android:layout_alignParentStart="true" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonFrame">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:text="Reset"
+        android:layout_weight="67.81"
+        android:gravity="center" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addColor"
+        android:text="@string/add_color"
+        android:layout_weight="62.46"
+        android:gravity="center" />
+</LinearLayout>
+</RelativeLayout>

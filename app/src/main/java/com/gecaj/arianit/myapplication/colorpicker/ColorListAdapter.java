@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.gecaj.arianit.myapplication.R;
-import com.gecaj.arianit.myapplication.colorpicker.ColorActivity;
 
 import java.util.List;
+
 /**
  * Created by Arianit on 21.11.2016.
  */
@@ -47,7 +47,7 @@ public class ColorListAdapter extends ArrayAdapter{
 
         SurfaceView resultColor = (SurfaceView) convertView.findViewById(R.id.listColor);
 
-        resultColor.setBackgroundColor(Color.rgb((int)(red*adj.getAdjustedColors()[0]),(int)(green*adj.getAdjustedColors()[1]),(int)(blue*adj.getAdjustedColors()[2])));
+        resultColor.setBackgroundColor(Color.rgb((int)(red*adj.getColorAdjust()[0]),(int)(green*adj.getColorAdjust()[1]),(int)(blue*adj.getColorAdjust()[2])));
 
         return convertView;
     }

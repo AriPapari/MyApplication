@@ -17,9 +17,13 @@ import com.gecaj.arianit.myapplication.colorpicker.ColorActivity;
 public class DBHandler extends SQLiteOpenHelper{
 
     private static final String LOG_TAG = ColorActivity.class.toString();
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "colorList.db";
     public static final String TABLE_COLORS = "colorList";
+    public static final String TABLE_EFFECT = "effect";
+    public static final String COLUMN_HEXCOLOR ="_hexcolor";
+    public static final String COLUMN_SPEED ="_speed";
+    public static final String COLUMN_EFFECT ="_effect";
     public static final String COLUMN_POS ="_pos";
     public static final String COLUMN_RED ="_red";
     public static final String COLUMN_GREEN ="_green";
@@ -33,6 +37,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //Creating Table for RGB Colors
         String query = "CREATE TABLE " + TABLE_COLORS + "(" +
                 COLUMN_POS + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_RED + " DOUBLE, " +
@@ -42,16 +47,44 @@ public class DBHandler extends SQLiteOpenHelper{
                 COLUMN_BRIGHT + " DOUBLE " +
                 ")";
         sqLiteDatabase.execSQL(query);
+        //Creating Table for Effects
+        query = "CREATE TABLE " + TABLE_EFFECT + "(" +
+                COLUMN_HEXCOLOR + " CHAR(6), " +
+                COLUMN_SPEED + " DOUBLE, " +
+                COLUMN_EFFECT + " INT " +
+                ")";
+        sqLiteDatabase.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_EFFECT);
         onCreate(sqLiteDatabase);
     }
 
+    //Truncate Table and add Colors
+    public void addHEXcolor(String[] hxc, double speed, int effect){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("TRUNCATE TABLE " + TABLE_EFFECT + ";");
+        ContentValues values = new ContentValues();
+        for(int i = 0; i <= hxc.length; i++)
+            values.put(COLUMN_HEXCOLOR,hxc[i]);
+        values.put(COLUMN_SPEED, speed);
+        values.put(COLUMN_EFFECT, effect);
+        db.insert(TABLE_EFFECT, null, values);
+    }
+
+    public void setColumnSpeed(double speed){
+        //update speed value in table
+    }
+
+    public void setColumnEffect(int effect){
+        //update effecttype in table
+    }
+
     //Add Color to db
-    public void addColor(double[] rgb){
+    public void addRGBcolor(double[] rgb){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_RED, rgb[0]);
@@ -60,14 +93,13 @@ public class DBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_WHITE, rgb[3]);
         values.put(COLUMN_BRIGHT, rgb[4]);
 
-        long result = db.insert(TABLE_COLORS, null, values);
-        Log.i(LOG_TAG, "++++++ COLOR R"+rgb[0]+" G"+rgb[1]+" B"+rgb[2]+" W"+rgb[3]+" BRIGHT"+rgb[4]+" ADDED +++++++ result = "+ result);
+        db.insert(TABLE_COLORS, null, values);
     }
 
     //Delete all Data
     public void deleteData(){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_COLORS + ";");
+        db.execSQL("TRUNCATE TABLE " + TABLE_COLORS + ";");
         db.execSQL("DELETE FROM sqlite_sequence WHERE name='"+TABLE_COLORS+"';");
         Log.i(LOG_TAG, "-------- TABLE DELETED ------");
     }
@@ -80,10 +112,16 @@ public class DBHandler extends SQLiteOpenHelper{
         Log.i(LOG_TAG, "-------- COLOR DELETED ------");
     }*/
 
-    //get Cursor/allData
-    public Cursor getAllData(){
+    //get rgb Colors
+    public Cursor getAllRGBdata(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor result = db.rawQuery("SELECT * FROM " + TABLE_COLORS ,null);
+        return result;
+    }
+
+    public Cursor getAllHEXdata(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor result = db.rawQuery("SELECT "+COLUMN_HEXCOLOR+" FROM " + TABLE_EFFECT ,null);
         return result;
     }
 

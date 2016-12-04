@@ -10,6 +10,14 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gecaj.arianit.myapplication.MainActivity">
 
+    <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
+
+    </WebView>
+
     <Button
         android:text="COLORPICKER"
         android:layout_width="match_parent"

@@ -10,34 +10,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gecaj.arianit.myapplication.effect.Effect">
 
-    <TextView
-        android:text="Response here"
+
+    <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:visibility="gone" >
 
-    <EditText
+    </WebView>
+
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="user"
-        android:ems="10"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="164dp"
-        android:id="@+id/editText2" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="pw"
-        android:ems="10"
-        android:layout_below="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2"
-        android:layout_marginTop="76dp"
-        android:id="@+id/editText3" />
+        android:id="@+id/colorList"
+        android:divider="@color/transparent"
+        android:layout_height="100dp" />
 
     <Button
         android:text="Button"
@@ -48,4 +36,64 @@
         android:layout_marginBottom="24dp"
         android:id="@+id/button4"
         android:onClick="gibIhm" />
+
+    <Button
+        android:text="New Color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button5"
+        android:layout_alignBottom="@+id/colorList"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="startColorpicker"
+        android:background="#a5ffffff" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/colorList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/effectColors"
+        android:layout_marginTop="10dp"
+        android:layout_height="100dp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/speedBar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:max="100" />
+
+    <TextView
+        android:text="Speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/speedBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView2" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/effectColors"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/effectListView"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:text="Response here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_below="@+id/effectListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

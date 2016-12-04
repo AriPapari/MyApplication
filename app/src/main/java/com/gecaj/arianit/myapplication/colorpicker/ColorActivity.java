@@ -33,7 +33,7 @@ public class ColorActivity extends AppCompatActivity {
     private double[] rgb;
     private ArrayList<double[]> itemList;
     private DBHandler dbHandler;
-    private final double[] adjustedColors = new double[] {1.0,0.55,1.0};
+    private final double[] colorAdjust = new double[] {1.0,0.55,1.0};
 
 
 
@@ -42,7 +42,7 @@ public class ColorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_colorpicker);
         dbHandler = new DBHandler(this,null,null, DB_VERSION);
-        final Cursor result = dbHandler.getAllData();
+        final Cursor result = dbHandler.getAllRGBdata();
         myWebView  = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("http://raspberrypi/php/start_LED.php");
         red = (SeekBar) findViewById(R.id.red);
@@ -184,14 +184,15 @@ public class ColorActivity extends AppCompatActivity {
                 dbHandler.deleteData();
                 //tabelle neu füllen
                 for(int j = 0; j < itemList.size(); j++)
-                    dbHandler.addColor(itemList.get(j));
+                    dbHandler.addRGBcolor(itemList.get(j));
                 return true;
             }
         });
 
     }
-    public double[] getAdjustedColors(){
-        return adjustedColors;
+    public ArrayList<double[]> getItemList(){return itemList;}
+    public double[] getColorAdjust(){
+        return colorAdjust;
     }
 
     //refresh seekbars
@@ -214,9 +215,9 @@ public class ColorActivity extends AppCompatActivity {
 
     private void set_resultColor(int red, int green, int blue, int white){
         myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+red+"&green="+green+"&blue="+blue+"&white="+white);
-        red = (int)(adjustedColors[0]*red);
-        green = (int)(adjustedColors[1]*green);
-        blue = (int)(adjustedColors[2]*blue);
+        red = (int)(colorAdjust[0]*red);
+        green = (int)(colorAdjust[1]*green);
+        blue = (int)(colorAdjust[2]*blue);
         Log.i(LOG_TAG, ">>> i_bright="+i_bright+" red="+red+" green="+green+" blue="+blue+" white="+white);
         resultColor.setBackgroundColor(Color.rgb(red,green,blue));
 
@@ -226,9 +227,10 @@ public class ColorActivity extends AppCompatActivity {
         //add Color to itemList + DB
         rgb = new double[] {i_red,i_green,i_blue,i_white,i_bright};
         itemList.add(rgb);
-        dbHandler.addColor(rgb);
+        dbHandler.addRGBcolor(rgb);
         //refresh list
         adapter = new ColorListAdapter(ColorActivity.this,R.layout.color_list, itemList);
         colorList.setAdapter(adapter);
     }
+
 }
