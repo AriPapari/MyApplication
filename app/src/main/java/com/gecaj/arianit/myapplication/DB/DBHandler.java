@@ -76,11 +76,17 @@ public class DBHandler extends SQLiteOpenHelper{
     }
 
     public void setColumnSpeed(double speed){
-        //update speed value in table
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE "+TABLE_EFFECT+
+                " SET "+COLUMN_SPEED+" = "+speed+
+                " WHERE "+COLUMN_SPEED+" != 0;");
     }
 
     public void setColumnEffect(int effect){
-        //update effecttype in table
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE "+TABLE_EFFECT+
+                " SET "+COLUMN_EFFECT+" = "+effect+
+                " WHERE "+COLUMN_EFFECT+" != 0;");
     }
 
     //Add Color to db
@@ -99,7 +105,7 @@ public class DBHandler extends SQLiteOpenHelper{
     //Delete all Data
     public void deleteData(){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("TRUNCATE TABLE " + TABLE_COLORS + ";");
+        db.execSQL("DELETE FROM " + TABLE_COLORS + ";");
         db.execSQL("DELETE FROM sqlite_sequence WHERE name='"+TABLE_COLORS+"';");
         Log.i(LOG_TAG, "-------- TABLE DELETED ------");
     }

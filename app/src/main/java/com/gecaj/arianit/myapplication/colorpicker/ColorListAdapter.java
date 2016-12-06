@@ -34,6 +34,7 @@ public class ColorListAdapter extends ArrayAdapter{
         LayoutInflater inflater = LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.color_list,parent,false);
 
+
         double red = colorList.get(position)[0]*colorList.get(position)[4];
         double green = colorList.get(position)[1]*colorList.get(position)[4];
         double blue = colorList.get(position)[2]*colorList.get(position)[4];

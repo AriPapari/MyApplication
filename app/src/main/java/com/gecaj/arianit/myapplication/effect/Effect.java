@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
@@ -27,85 +28,137 @@ import com.gecaj.arianit.myapplication.R;
 import com.gecaj.arianit.myapplication.colorpicker.ColorActivity;
 import com.gecaj.arianit.myapplication.colorpicker.ColorListAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Effect extends AppCompatActivity {
-    EditText name,pw;
-    TextView viewResponse;
-    String server_url = "http://192.168.178.64/php/json_db.php";
-    private ListView colorList, hexcol;
-    private ArrayAdapter adapter;
-    private ArrayList<double[]> colorItemList;
+    private TextView viewResponse;
+    private String server_url = "http://192.168.178.64/php/json_db.php";
+    private ListView rgbColView, hexColView, effectView;
+    private SurfaceView resultColorPicker;
+    private WebView myWebView;
+    private ArrayList<double[]> rgbColARL;
+    private ArrayList<String> hexColARL;
+    private ArrayList<Integer> effectARL;
     public static final int DB_VERSION = 2;
     private final DBHandler dbHandler = new DBHandler(this,null,null, DB_VERSION);
     private Cursor resultRGB, resultHEX;
-    private WebView myWebView;
-    private final ColorActivity adj = new ColorActivity();
-    private SurfaceView resultColor;
     int red = 0, green = 0, blue = 0, white = 0;
     double bright = 1.0;
-    private ArrayList<String> hexColors;
     private double speed;
-    private int effect;
-    private SeekBar speedBar;
+    private int effectType;
+    private SeekBar speedBar, whiteBar;
+    private final ColorActivity adj = new ColorActivity();
+    private static final String LOG_TAG = ColorActivity.class.toString();
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        init();
+        setListeners();
+    }
 
     private void init(){
         setContentView(R.layout.activity_effect);
-        colorList = (ListView) findViewById(R.id.colorList);
-        colorItemList = new ArrayList<>();
-        hexColors = new ArrayList<>();
-        myWebView  = (WebView) findViewById(R.id.webview);
-        speedBar = (SeekBar) findViewById(R.id.speedBar);
+        rgbColView = (ListView)findViewById(R.id.colorList);
+        hexColView = (ListView)findViewById(R.id.effectColors);
+        effectView = (ListView)findViewById(R.id.effectListView);
+        rgbColARL = new ArrayList<>();
+        hexColARL = new ArrayList<>();
+        effectARL = new ArrayList<>();
+        myWebView  = (WebView)findViewById(R.id.webview);
+        speedBar = (SeekBar)findViewById(R.id.speedBar);
+        whiteBar = (SeekBar)findViewById(R.id.whiteBar);
         viewResponse = (TextView)findViewById(R.id.textView);
+
+
+        //fill effect type with data out of DB
+        effectARL.add(0);
+        effectARL.add(1);
+        effectView.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,effectARL));
+
 
 
         //reading from DB
         resultRGB = dbHandler.getAllRGBdata();
         if(resultRGB.getCount() != 0) {
             while (resultRGB.moveToNext()) {
-                colorItemList.add(new double[]{resultRGB.getDouble(1), resultRGB.getDouble(2), resultRGB.getDouble(3), resultRGB.getDouble(4), resultRGB.getDouble(5)});
-                adapter = new ColorListAdapter(Effect.this, R.layout.color_list, colorItemList);
-                colorList.setAdapter(adapter);
+                rgbColARL.add(new double[]{resultRGB.getDouble(1), resultRGB.getDouble(2), resultRGB.getDouble(3), resultRGB.getDouble(4), resultRGB.getDouble(5)});
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.color_list, rgbColARL));
             }
         }
 
         resultHEX = dbHandler.getAllRGBdata();
+        /*
         if(resultHEX.getCount() != 0) {
             while (resultHEX.moveToNext()) {
-                hexColors.add(resultHEX.getString(1));
-                adapter = new ColorListAdapter(Effect.this, R.layout.color_list, colorItemList);
-                .setAdapter(adapter);
+                hexColARL.add(resultHEX.getString(1));
+                hexColView.setAdapter(new HexColorListAdapter(Effect.this, R.layout.color_list, hexColARL));
             }
         }
+        */
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        init();
-
-        //On ListView-Item Click Listeners
-        colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private void setListeners(){
+        //RGBColView//////////////
+        rgbColView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                hexColARL.add(toHexColor(new double[]{rgbColARL.get(i)[0], rgbColARL.get(i)[1], rgbColARL.get(i)[2]}));
+                //refresh list
+                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.color_list, hexColARL));
             }
         });
-        colorList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        rgbColView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                colorItemList.remove(i);
-                colorList.setAdapter(adapter);
+                rgbColARL.remove(i);
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.color_list, rgbColARL));
                 dbHandler.deleteData();
                 //tabelle neu füllen
-                for(int j = 0; j < colorItemList.size(); j++)
-                    dbHandler.addRGBcolor(colorItemList.get(j));
+                for(int j = 0; j < rgbColARL.size(); j++)
+                    dbHandler.addRGBcolor(rgbColARL.get(j));
                 return true;
             }
         });
 
+        //HexColView//////////////
+        hexColView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(0,2),16)+
+                        "&green="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(2,4),16)+
+                        "&blue="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(4,6),16)+
+                        "&white= 0");
+            }
+        });
+        hexColView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                hexColARL.remove(i);
+                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.color_list, hexColARL));
+                return true;
+            }
+        });
 
+        //EffectView//////////////
+        effectView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                for(int j = 0; j < effectView.getAdapter().getCount(); j++)
+                    getViewByPosition(j,effectView).setBackgroundColor(Color.WHITE);
+                view.setBackgroundColor(Color.CYAN);
+                effectType = effectARL.get(i);
+            }
+        });
+
+        //SpeedBar//////////////
         speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -125,14 +178,27 @@ public class Effect extends AppCompatActivity {
             }
         });
 
+        //WhiteBar//////////////
+        whiteBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                white = i;
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
+            }
 
-        //name = (EditText)findViewById(R.id.editText2);
-        //pw = (EditText)findViewById(R.id.editText3);
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
-    public void gibIhm(final View view){
+    public void sendRequest(final View view){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, server_url,
                 new Response.Listener<String>() {
@@ -150,10 +216,21 @@ public class Effect extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                for(int i = 0; i < hexColors.length; i++)
-                    params.put("color"+i,hexColors[i]);
-                params.put("speed",Double.toString(speed));
-                params.put("effect", Integer.toString(effect));
+                JSONObject jsnmain = new JSONObject();
+                JSONArray jsnar = new JSONArray();
+                JSONObject jsnobj = new JSONObject();
+                try {
+                    for(int i = 0; i < hexColARL.size(); i++)
+                        jsnar.put(hexColARL.get(i));
+                    jsnobj.put("hexCol",jsnar);
+                    jsnobj.put("speed",speed);
+                    jsnobj.put("white",white);
+                    jsnobj.put("effect",effectType);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                params.put("effectOBJ", jsnobj.toString());
+
                 //key same as param name in php!
                 return params;
             }
@@ -167,7 +244,7 @@ public class Effect extends AppCompatActivity {
         //custom xml for dialog here
         dialog.setContentView(R.layout.dialog_colorpicker);
         dialog.show();
-        resultColor = (SurfaceView)dialog.findViewById(R.id.listColor);
+        resultColorPicker = (SurfaceView)dialog.findViewById(R.id.listColor);
         final SeekBar blue_seek = (SeekBar)dialog.findViewById(R.id.blue);
         final SeekBar green_seek = (SeekBar)dialog.findViewById(R.id.green);
         final SeekBar red_seek = (SeekBar)dialog.findViewById(R.id.red);
@@ -263,13 +340,12 @@ public class Effect extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //add to db here and refresh colorlist!
-                //add Color to colorItemList + DB
+                //add Color to rgbColARL + DB
                 double []rgb = new double[] {red,green,blue,white,bright};
-                colorItemList.add(rgb);
+                rgbColARL.add(rgb);
                 dbHandler.addRGBcolor(rgb);
                 //refresh list
-                adapter = new ColorListAdapter(Effect.this,R.layout.color_list, colorItemList);
-                colorList.setAdapter(adapter);
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this,R.layout.color_list, rgbColARL));
                 dialog.cancel();
                 white = red = green = blue = 0;
                 bright = 1.0;
@@ -295,17 +371,40 @@ public class Effect extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
     private void setResultColor(int red, int green, int blue, int white, double bright){
-        double ar = adj.getColorAdjust()[0], ag = adj.getColorAdjust()[1], ab = adj.getColorAdjust()[2];
-        resultColor.setBackgroundColor(Color.rgb((int)(red*bright*ar),(int)(green*bright*ag),(int)(blue*bright*ab)));
-        myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+(int)(red*bright*ar)+
-                "&green="+(int)(green*bright*ag)+
-                "&blue="+(int)(blue*bright*ab)+
+        resultColorPicker.setBackgroundColor(Color.rgb((int)(red*bright*adj.getColorAdjust()[0]),
+                (int)(green*bright*adj.getColorAdjust()[1]),
+                (int)(blue*bright*adj.getColorAdjust()[2])));
+        myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+(int)(red*bright)+
+                "&green="+(int)(green*bright)+
+                "&blue="+(int)(blue*bright)+
                 "&white="+white);
+    }
+
+    private String toHexColor(double[] rgb){
+        String hexValue = "";
+        for(int i = 0; i <= 2; i++){
+            if(rgb[i]<16)
+                hexValue+="0"+Integer.toHexString((int)rgb[i]);
+            else
+                hexValue+=Integer.toHexString((int)rgb[i]);
+            Log.i(LOG_TAG, ">>> RGBTOHEX "+i+": "+(int)rgb[i]+" HEXVALUE: "+hexValue);
+        }
+        Log.i(LOG_TAG, ">>> RETURNING HEXSTRING: "+hexValue);
+        return hexValue;
+    }
+
+
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
     }
 }
