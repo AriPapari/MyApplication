@@ -13,7 +13,6 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -38,7 +37,7 @@ import java.util.Map;
 
 public class Effect extends AppCompatActivity {
     private TextView viewResponse;
-    private String server_url = "http://192.168.178.64/php/json_db.php";
+    private String server_url = "http://192.168.178.64/php/json_post.php";
     private ListView rgbColView, hexColView, effectView;
     private SurfaceView resultColorPicker;
     private WebView myWebView;
@@ -55,6 +54,7 @@ public class Effect extends AppCompatActivity {
     private SeekBar speedBar, whiteBar;
     private final ColorActivity adj = new ColorActivity();
     private static final String LOG_TAG = ColorActivity.class.toString();
+    int p = 0;
 
 
     @Override
@@ -164,7 +164,7 @@ public class Effect extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 speed = i;
                 //change speed value in json file
-                myWebView.loadUrl("http://raspberrypi/php/LED_speed.php");
+                myWebView.loadUrl("http://raspberrypi/php/LED_speed.php/?speed="+speed);
             }
 
             @Override
@@ -199,12 +199,11 @@ public class Effect extends AppCompatActivity {
     }
 
     public void sendRequest(final View view){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, server_url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        viewResponse.setText(response);
+                        viewResponse.setText(p+1);
                     }
                 },
                 new Response.ErrorListener() {
@@ -216,7 +215,6 @@ public class Effect extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                JSONObject jsnmain = new JSONObject();
                 JSONArray jsnar = new JSONArray();
                 JSONObject jsnobj = new JSONObject();
                 try {
