@@ -13,6 +13,8 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -42,7 +44,7 @@ public class Effect extends AppCompatActivity {
     private SurfaceView resultColorPicker;
     private WebView myWebView;
     private ArrayList<double[]> rgbColARL;
-    private ArrayList<String> hexColARL;
+    private ArrayList<String> hexColARL, rndhexColARL;
     private ArrayList<Integer> effectARL;
     public static final int DB_VERSION = 2;
     private final DBHandler dbHandler = new DBHandler(this,null,null, DB_VERSION);
@@ -54,7 +56,7 @@ public class Effect extends AppCompatActivity {
     private SeekBar speedBar, whiteBar;
     private final ColorActivity adj = new ColorActivity();
     private static final String LOG_TAG = ColorActivity.class.toString();
-    int p = 0;
+    private CheckBox rndColors, rndEffect;
 
 
     @Override
@@ -72,10 +74,13 @@ public class Effect extends AppCompatActivity {
         rgbColARL = new ArrayList<>();
         hexColARL = new ArrayList<>();
         effectARL = new ArrayList<>();
+        rndhexColARL = new ArrayList<>();
         myWebView  = (WebView)findViewById(R.id.webview);
         speedBar = (SeekBar)findViewById(R.id.speedBar);
         whiteBar = (SeekBar)findViewById(R.id.whiteBar);
-        viewResponse = (TextView)findViewById(R.id.textView);
+        viewResponse = (TextView)findViewById(R.id.textView6);
+        rndColors = (CheckBox)findViewById(R.id.rndColCheck);
+        rndEffect = (CheckBox)findViewById(R.id.rndEffCheck);
 
 
         //fill effect type with data out of DB
@@ -106,6 +111,34 @@ public class Effect extends AppCompatActivity {
     }
 
     private void setListeners(){
+
+        //HexColCheck/////////////
+        rndEffect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    effectView.setEnabled(false);
+                    effectView.setAlpha((float)(0.4));
+                }else{
+                    effectView.setEnabled(true);
+                    effectView.setAlpha((float)(1));
+                }
+            }
+        });
+        //EffectCheck/////////////
+        rndColors.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    hexColView.setEnabled(false);
+                    hexColView.setAlpha((float)(0.4));
+                }else{
+                    hexColView.setEnabled(true);
+                    hexColView.setAlpha((float)(1));
+                }
+            }
+        });
+
         //RGBColView//////////////
         rgbColView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -183,8 +216,8 @@ public class Effect extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 white = i;
+                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?white="+white);
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -203,7 +236,7 @@ public class Effect extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        viewResponse.setText(p+1);
+                        //do smth...
                     }
                 },
                 new Response.ErrorListener() {
@@ -218,18 +251,28 @@ public class Effect extends AppCompatActivity {
                 JSONArray jsnar = new JSONArray();
                 JSONObject jsnobj = new JSONObject();
                 try {
-                    for(int i = 0; i < hexColARL.size(); i++)
-                        jsnar.put(hexColARL.get(i));
+                    if(rndColors.isChecked()) {
+                        for (int i = 0; i <10; i++){
+                            double[] rgb = new double[]{Math.random()*255,Math.random()*255,Math.random()*255};
+                            rndhexColARL.add(toHexColor(rgb));
+                        }
+                        for (int i = 0; i < rndhexColARL.size(); i++)
+                            jsnar.put(rndhexColARL.get(i));
+                    }
+                    else
+                        for(int i = 0; i < hexColARL.size(); i++)
+                            jsnar.put(hexColARL.get(i));
                     jsnobj.put("hexCol",jsnar);
                     jsnobj.put("speed",speed);
                     jsnobj.put("white",white);
-                    jsnobj.put("effect",effectType);
+                    if(rndEffect.isChecked())
+                        jsnobj.put("effect",(int)(effectARL.size()*Math.random()));
+                    else
+                        jsnobj.put("effect",effectType);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 params.put("effectOBJ", jsnobj.toString());
-
-                //key same as param name in php!
                 return params;
             }
         };
@@ -392,7 +435,6 @@ public class Effect extends AppCompatActivity {
         Log.i(LOG_TAG, ">>> RETURNING HEXSTRING: "+hexValue);
         return hexValue;
     }
-
 
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
