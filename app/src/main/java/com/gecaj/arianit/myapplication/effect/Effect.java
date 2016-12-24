@@ -20,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Effect extends AppCompatActivity {
     private TextView viewResponse;
@@ -45,7 +47,7 @@ public class Effect extends AppCompatActivity {
     private WebView myWebView;
     private ArrayList<double[]> rgbColARL;
     private ArrayList<String> hexColARL, rndhexColARL;
-    private ArrayList<Integer> effectARL;
+    private ArrayList<String> effectARL;
     public static final int DB_VERSION = 2;
     private final DBHandler dbHandler = new DBHandler(this,null,null, DB_VERSION);
     private Cursor resultRGB, resultHEX;
@@ -73,7 +75,6 @@ public class Effect extends AppCompatActivity {
         effectView = (ListView)findViewById(R.id.effectListView);
         rgbColARL = new ArrayList<>();
         hexColARL = new ArrayList<>();
-        effectARL = new ArrayList<>();
         rndhexColARL = new ArrayList<>();
         myWebView  = (WebView)findViewById(R.id.webview);
         speedBar = (SeekBar)findViewById(R.id.speedBar);
@@ -83,10 +84,6 @@ public class Effect extends AppCompatActivity {
         rndEffect = (CheckBox)findViewById(R.id.rndEffCheck);
 
 
-        //fill effect type with data out of DB
-        effectARL.add(0);
-        effectARL.add(1);
-        effectView.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,effectARL));
 
 
 
@@ -181,13 +178,13 @@ public class Effect extends AppCompatActivity {
         });
 
         //EffectView//////////////
+        //fill effect type with data out of DB
+        effectView.setAdapter(new ArrayAdapter<>(this,R.layout.adapter_effectview,R.id.effectItem,new String[]{"Strobe","Fade","Flash"}));
         effectView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                for(int j = 0; j < effectView.getAdapter().getCount(); j++)
-                    getViewByPosition(j,effectView).setBackgroundColor(Color.WHITE);
-                view.setBackgroundColor(Color.CYAN);
-                effectType = effectARL.get(i);
+                view.setSelected(true);
+                effectType = i;
             }
         });
 
@@ -197,7 +194,7 @@ public class Effect extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 speed = i;
                 //change speed value in json file
-                myWebView.loadUrl("http://raspberrypi/php/LED_speed.php/?speed="+speed);
+                myWebView.loadUrl("http://raspberrypi/php/LED_speed.php/?speed="+(100-speed));
             }
 
             @Override
@@ -216,7 +213,7 @@ public class Effect extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 white = i;
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?white="+white);
+                myWebView.loadUrl("http://raspberrypi/php/LED_white.php/?white="+white);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -252,21 +249,22 @@ public class Effect extends AppCompatActivity {
                 JSONObject jsnobj = new JSONObject();
                 try {
                     if(rndColors.isChecked()) {
-                        for (int i = 0; i <10; i++){
+                        for (int i = 0; i <3; i++){
                             double[] rgb = new double[]{Math.random()*255,Math.random()*255,Math.random()*255};
                             rndhexColARL.add(toHexColor(rgb));
                         }
                         for (int i = 0; i < rndhexColARL.size(); i++)
                             jsnar.put(rndhexColARL.get(i));
+                        rndhexColARL.clear();
                     }
                     else
                         for(int i = 0; i < hexColARL.size(); i++)
                             jsnar.put(hexColARL.get(i));
                     jsnobj.put("hexCol",jsnar);
-                    jsnobj.put("speed",speed);
+                    jsnobj.put("speed",100-speed);
                     jsnobj.put("white",white);
                     if(rndEffect.isChecked())
-                        jsnobj.put("effect",(int)(effectARL.size()*Math.random()));
+                        jsnobj.put("effect",(int)(3*Math.random()));
                     else
                         jsnobj.put("effect",effectType);
                 } catch (JSONException e) {
@@ -276,6 +274,7 @@ public class Effect extends AppCompatActivity {
                 return params;
             }
         };
+
         MySingleton.getInstance(Effect.this).addToRequestQue(stringRequest);
     }
 
@@ -434,17 +433,5 @@ public class Effect extends AppCompatActivity {
         }
         Log.i(LOG_TAG, ">>> RETURNING HEXSTRING: "+hexValue);
         return hexValue;
-    }
-
-    public View getViewByPosition(int pos, ListView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
     }
 }

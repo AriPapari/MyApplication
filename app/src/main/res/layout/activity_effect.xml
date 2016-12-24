@@ -82,7 +82,8 @@
         <ListView
             android:layout_width="match_parent"
             android:id="@+id/effectColors"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
 
@@ -110,7 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/rndEffCheck"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center|start" />
         </LinearLayout>
 
         <ListView
@@ -119,7 +121,8 @@
             android:layout_alignParentStart="true"
             android:id="@+id/effectListView"
             android:layout_height="50dp"
-            android:layout_below="@+id/textView" />
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
     <TextView
