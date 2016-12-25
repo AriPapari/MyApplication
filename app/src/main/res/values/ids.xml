@@ -6,4 +6,5 @@
     <item name="colorList" type="id">colorList</item>
     <item name="textBrightness" type="id">Brightness:</item>
     <item name="textView4" type="id">textView4</item>
+    <item name="textView7" type="id">textView7</item>
 </resources>
