@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".effect.Effect" />
-        <activity android:name=".colorpicker.ColorActivity"></activity>
+        <activity android:name=".colorpicker.ColorActivity" />
+        <activity android:name=".wakeup.WakeUpLight"></activity>
     </application>
 
 </manifest>

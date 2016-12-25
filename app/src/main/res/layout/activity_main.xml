@@ -37,4 +37,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="startEffect" />
+
+    <Button
+        android:text="Wake Up Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/wakeup_btn"
+        android:onClick="startAlarm" />
 </RelativeLayout>

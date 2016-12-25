@@ -24,4 +24,8 @@ public class MainActivity extends AppCompatActivity {
         Intent effect = new Intent(this, com.gecaj.arianit.myapplication.effect.Effect.class);
         startActivity(effect);
     }
+    public void startAlarm(View view){
+        Intent alarm = new Intent(this, com.gecaj.arianit.myapplication.wakeup.WakeUpLight.class);
+        startActivity(alarm);
+    }
 }
