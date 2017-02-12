@@ -44,7 +44,7 @@ public class ColorActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this,null,null, DB_VERSION);
         final Cursor result = dbHandler.getAllRGBdata();
         myWebView  = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://raspberrypi/php/start_LED.php");
+        myWebView.loadUrl("http://192.168.2.107/php/start_LED.php");
         red = (SeekBar) findViewById(R.id.red);
         green = (SeekBar) findViewById(R.id.green);
         blue = (SeekBar) findViewById(R.id.blue);
@@ -70,7 +70,7 @@ public class ColorActivity extends AppCompatActivity {
                 i_red = i;
                 tr = (int)(i_bright*i_red);
                 set_resultColor(tr,tg,tb,tw);
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
+                myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -89,7 +89,7 @@ public class ColorActivity extends AppCompatActivity {
                 i_green = i;
                 tg = (int)(i_bright*i_green);
                 set_resultColor(tr,tg,tb,tw);
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
+                myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -107,7 +107,7 @@ public class ColorActivity extends AppCompatActivity {
                 i_blue = i;
                 tb = (int)(i_bright*i_blue);
                 set_resultColor(tr,tg,tb,tw);
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
+                myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -126,7 +126,7 @@ public class ColorActivity extends AppCompatActivity {
                 i_white = i;
                 tw = i_white;
                 set_resultColor(tr,tg,tb,tw);
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
+                myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+tr+"&green="+tg+"&blue="+tb+"&white="+tw);
             }
 
             @Override
@@ -207,14 +207,14 @@ public class ColorActivity extends AppCompatActivity {
     //turn off all LEDs
     public void reset_LED(View view){
         Log.i(LOG_TAG, "######## BUTTON PRESSED ########");
-        myWebView.loadUrl("http://raspberrypi/php/kill.php/");
+        myWebView.loadUrl("http://192.168.2.107/php/kill.php/");
         i_red = 0; i_green = 0; i_blue = 0; i_white = 0;
         refresh_progress();
     }
 
 
     private void set_resultColor(int red, int green, int blue, int white){
-        myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+red+"&green="+green+"&blue="+blue+"&white="+white);
+        myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+red+"&green="+green+"&blue="+blue+"&white="+white);
         red = (int)(colorAdjust[0]*red);
         green = (int)(colorAdjust[1]*green);
         blue = (int)(colorAdjust[2]*blue);

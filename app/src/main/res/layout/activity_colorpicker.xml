@@ -138,7 +138,7 @@
             android:onClick="reset_LED"
             android:text="@string/reset"
             android:background="@android:drawable/btn_default"
-            android:layout_weight="67.81"
+            android:layout_weight="58.49"
             android:gravity="center" />
 
         <Button

@@ -20,12 +20,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.gecaj.arianit.myapplication.DB.DBHandler;
+import com.gecaj.arianit.myapplication.MySingleton;
 import com.gecaj.arianit.myapplication.R;
 import com.gecaj.arianit.myapplication.colorpicker.ColorActivity;
 import com.gecaj.arianit.myapplication.colorpicker.ColorListAdapter;
@@ -37,11 +37,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Effect extends AppCompatActivity {
     private TextView viewResponse;
-    private String server_url = "http://192.168.178.64/php/json_post.php";
+    private String server_url = "http://192.168.2.107/php/json_post.php";
     private ListView rgbColView, hexColView, effectView;
     private SurfaceView resultColorPicker;
     private WebView myWebView;
@@ -162,7 +161,7 @@ public class Effect extends AppCompatActivity {
         hexColView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(0,2),16)+
+                myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(0,2),16)+
                         "&green="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(2,4),16)+
                         "&blue="+Integer.parseInt(hexColView.getItemAtPosition(i).toString().substring(4,6),16)+
                         "&white= 0");
@@ -194,7 +193,7 @@ public class Effect extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 speed = i;
                 //change speed value in json file
-                myWebView.loadUrl("http://raspberrypi/php/LED_speed.php/?speed="+(100-speed));
+                myWebView.loadUrl("http://192.168.2.107/php/LED_speed.php/?speed="+(100-speed));
             }
 
             @Override
@@ -213,7 +212,7 @@ public class Effect extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 white = i;
-                myWebView.loadUrl("http://raspberrypi/php/LED_white.php/?white="+white);
+                myWebView.loadUrl("http://192.168.2.107/php/LED_white.php/?white="+white);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -239,7 +238,9 @@ public class Effect extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.i(LOG_TAG, "VolleyError while Post: "+ error.toString());
                         viewResponse.setText("VolleyError while Post: "+ error.toString());
+
                     }
                 }){
             @Override
@@ -249,7 +250,7 @@ public class Effect extends AppCompatActivity {
                 JSONObject jsnobj = new JSONObject();
                 try {
                     if(rndColors.isChecked()) {
-                        for (int i = 0; i <3; i++){
+                        for (int i = 0; i <15; i++){
                             double[] rgb = new double[]{Math.random()*255,Math.random()*255,Math.random()*255};
                             rndhexColARL.add(toHexColor(rgb));
                         }
@@ -274,7 +275,12 @@ public class Effect extends AppCompatActivity {
                 return params;
             }
         };
-
+        /*
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                (int) TimeUnit.SECONDS.toMillis(20),
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                */
         MySingleton.getInstance(Effect.this).addToRequestQue(stringRequest);
     }
 
@@ -416,7 +422,7 @@ public class Effect extends AppCompatActivity {
         resultColorPicker.setBackgroundColor(Color.rgb((int)(red*bright*adj.getColorAdjust()[0]),
                 (int)(green*bright*adj.getColorAdjust()[1]),
                 (int)(blue*bright*adj.getColorAdjust()[2])));
-        myWebView.loadUrl("http://raspberrypi/php/LED_OTF.php/?red="+(int)(red*bright)+
+        myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+(int)(red*bright)+
                 "&green="+(int)(green*bright)+
                 "&blue="+(int)(blue*bright)+
                 "&white="+white);

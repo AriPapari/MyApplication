@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".effect.Effect" />
         <activity android:name=".colorpicker.ColorActivity" />
-        <activity android:name=".wakeup.WakeUpLight"></activity>
+        <activity android:name=".wakeup.WakeUpLight" />
+        <activity android:name=".antithief.AntiThief"></activity>
     </application>
 
 </manifest>

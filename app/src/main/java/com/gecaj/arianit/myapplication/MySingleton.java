@@ -1,4 +1,4 @@
-package com.gecaj.arianit.myapplication.effect;
+package com.gecaj.arianit.myapplication;
 
 import android.content.Context;
 

@@ -5,9 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -21,14 +19,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.gecaj.arianit.myapplication.R;
-import com.gecaj.arianit.myapplication.effect.Effect;
-import com.gecaj.arianit.myapplication.effect.MySingleton;
+import com.gecaj.arianit.myapplication.MySingleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +34,7 @@ public class WakeUpLight extends AppCompatActivity {
     ToggleButton alarmSwitch;
     TextView alarmStatus;
     String time;
-    private String server_url = "http://192.168.178.64/php/json_post.php";
+    private String server_url = "http://192.168.2.107/php/json_alarm.php";
     private static final String LOG_TAG = WakeUpLight.class.toString();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +91,7 @@ public class WakeUpLight extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //do smth...
+                        alarmStatus.setText("Response:"+response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -114,7 +109,7 @@ public class WakeUpLight extends AppCompatActivity {
                 try {
                     jsnobj.put("hour",timePicker.getHour());
                     jsnobj.put("minutes",timePicker.getMinute());
-                    jsnobj.put("earlybird",spinner.getSelectedItem().toString().substring(0,1));
+                    jsnobj.put("earlybird",spinner.getSelectedItem().toString().substring(0,2));
                     jsnobj.put("alarmset",alarmset);
                 } catch (JSONException e) {
                     e.printStackTrace();

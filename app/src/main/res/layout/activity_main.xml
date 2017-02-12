@@ -46,4 +46,13 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/wakeup_btn"
         android:onClick="startAlarm" />
+
+    <Button
+        android:text="Anti Thief"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wakeup_btn"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button9"
+        android:onClick="startThief" />
 </RelativeLayout>

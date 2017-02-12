@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myWebView  = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://raspberrypi/php/start_LED.php");
+        myWebView.loadUrl("http://192.168.2.107/php/start_LED.php");
     }
     public void startColorpicker(View view){
         Intent colorpicker = new Intent(this, com.gecaj.arianit.myapplication.colorpicker.ColorActivity.class);
@@ -27,5 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public void startAlarm(View view){
         Intent alarm = new Intent(this, com.gecaj.arianit.myapplication.wakeup.WakeUpLight.class);
         startActivity(alarm);
+    }
+    public void startThief(View view){
+        Intent thief = new Intent(this, com.gecaj.arianit.myapplication.antithief.AntiThief.class);
+        startActivity(thief);
     }
 }
