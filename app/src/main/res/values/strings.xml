@@ -4,6 +4,7 @@
     <string name="reset">Switch OFF</string>
     <string name="add_color">Add Color</string>
     <string name="alarmHintText">Chose the time you would like to wake up and press SET ALARM</string>
+    <string name="toggleOff">Chose your style:</string>
     <string-array name="spinner_options">
         <item>30 min</item>
         <item>40 min</item>

@@ -34,7 +34,7 @@ public class WakeUpLight extends AppCompatActivity {
     ToggleButton alarmSwitch;
     TextView alarmStatus;
     String time;
-    private String server_url = "http://192.168.2.107/php/json_alarm.php";
+    private final String server_url = "http://192.168.2.107/php/json_alarm.php";
     private static final String LOG_TAG = WakeUpLight.class.toString();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

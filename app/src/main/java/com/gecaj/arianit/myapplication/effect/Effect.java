@@ -44,6 +44,7 @@ public class Effect extends AppCompatActivity {
     private ListView rgbColView, hexColView, effectView;
     private SurfaceView resultColorPicker;
     private WebView myWebView;
+    private final ColorActivity adj = new ColorActivity();
     private ArrayList<double[]> rgbColARL;
     private ArrayList<String> hexColARL, rndhexColARL;
     private ArrayList<String> effectARL;
@@ -55,7 +56,6 @@ public class Effect extends AppCompatActivity {
     private double speed;
     private int effectType;
     private SeekBar speedBar, whiteBar;
-    private final ColorActivity adj = new ColorActivity();
     private static final String LOG_TAG = ColorActivity.class.toString();
     private CheckBox rndColors, rndEffect;
 

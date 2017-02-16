@@ -32,4 +32,8 @@ public class MainActivity extends AppCompatActivity {
         Intent thief = new Intent(this, com.gecaj.arianit.myapplication.antithief.AntiThief.class);
         startActivity(thief);
     }
+    public void startLightshow(View view){
+        Intent lightshow = new Intent(this, com.gecaj.arianit.myapplication.lightshow.Lightshow.class);
+        startActivity(lightshow);
+    }
 }

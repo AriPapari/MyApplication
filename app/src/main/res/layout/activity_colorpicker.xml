@@ -30,47 +30,18 @@
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/listColor"
         android:id="@+id/colorList"
-        android:divider="@color/transparent" />
+        android:divider="@color/transparent"
+        android:background="@drawable/listviewshape"/>
 
 
     <SurfaceView
         android:layout_height="50dp"
         android:id="@+id/listColor"
         android:layout_width="match_parent"
-        android:layout_above="@+id/blue"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/transparent" />
-
-
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_height="30dp"
-        android:id="@+id/green"
         android:layout_above="@+id/red"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="255"
-        android:progress="0"
-        android:progressBackgroundTint="@android:color/holo_green_light" />
-
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_height="30dp"
-        android:id="@+id/blue"
-        android:layout_above="@+id/green"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="255"
-        android:progress="0"
-        android:progressBackgroundTint="@color/colorPrimary"/>
-
+        android:background="@color/transparent" />
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -78,13 +49,44 @@
         android:id="@+id/red"
         android:max="255"
         android:progress="0"
-        android:layout_above="@+id/white"
+        android:layout_above="@+id/green"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:progressBackgroundTint="@android:color/holo_red_light" />
+        android:progressBackgroundTint="@android:color/white"
+        android:background="@drawable/seekbarshape"
+        android:backgroundTint="#55cc0000"/>
 
+
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:id="@+id/green"
+        android:layout_above="@+id/blue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:max="255"
+        android:progress="0"
+        android:progressBackgroundTint="@android:color/holo_green_light"
+        android:backgroundTint="#5500ff00"
+        android:background="@drawable/seekbarshape" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/blue"
+        android:max="255"
+        android:progress="0"
+        android:progressBackgroundTint="@color/colorPrimary"
+        android:background="@drawable/seekbarshape"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/white" />
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
@@ -97,7 +99,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:progressBackgroundTint="@android:color/darker_gray"/>
+        android:progressBackgroundTint="@android:color/darker_gray"
+        android:background="@drawable/borders" />
 
     <TextView
         android:text="Brightness:"
@@ -153,5 +156,6 @@
 
 
     </LinearLayout>
+
 
 </RelativeLayout>

@@ -13,9 +13,7 @@
             android:id="@+id/listColor"
             android:layout_width="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/transparent"
-            android:radius="20dp" />
+            android:layout_alignParentStart="true"/>
 
         <LinearLayout
             android:orientation="vertical"
