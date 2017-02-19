@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,9 +36,9 @@ public class WakeUpLight extends AppCompatActivity {
     private Spinner spinner;
     private ArrayAdapter<CharSequence> adapter;
     private TimePicker timePicker;
-    private ToggleButton alarmSwitch;
+    private Button stop, start;
     private TextView alarmStatus;
-    private SurfaceView disabler;
+    private ImageView disabler;
     private String server_url, server_url_check_alarm, time,raspIP;
     private static final String LOG_TAG = WakeUpLight.class.toString();
     @Override
@@ -52,12 +54,13 @@ public class WakeUpLight extends AppCompatActivity {
         server_url_check_alarm = "http://"+raspIP+"/php/check_alarm.php";
         alarmStatus = (TextView)findViewById(R.id.alarmText);
         alarmStatus.setTextColor(Color.DKGRAY);
-        alarmSwitch = (ToggleButton)findViewById(R.id.alarmSwitch);
+        start = (Button)findViewById(R.id.startAlarm);
+        stop = (Button)findViewById(R.id.stopAlarm);
         timePicker = (TimePicker)findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
         spinner = (Spinner)findViewById(R.id.spinner);
-        disabler = (SurfaceView) findViewById(R.id.disabler);
-
+        disabler = (ImageView) findViewById(R.id.disabler);
+        stop.setEnabled(false);
         adapter = ArrayAdapter.createFromResource(this,R.array.spinner_options,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -65,33 +68,38 @@ public class WakeUpLight extends AppCompatActivity {
     }
 
     private void setListeners(){
-        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
+        start.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    time = (timePicker.getHour()+":"+timePicker.getMinute());
-                    Log.d(LOG_TAG,time);
-                    alarmStatus.setTextColor(Color.GREEN);
-                    alarmStatus.setText("Alarm set for "+time+"\nEarly Bird set to "+spinner.getSelectedItem());
-                    timePicker.setEnabled(false);
-                    timePicker.setVerticalScrollBarEnabled(false);
-                    spinner.setEnabled(false);
-                    timePicker.setAlpha((float)(0.6));
-                    spinner.setAlpha((float)(0.6));
-                    disabler.setVisibility(View.VISIBLE);
-                }
-                else if(!b){
-                    alarmStatus.setTextColor(Color.DKGRAY);
-                    alarmStatus.setText(R.string.alarmHintText);
-                    timePicker.setEnabled(true);
-                    timePicker.setVerticalScrollBarEnabled(true);
-                    spinner.setEnabled(true);
-                    timePicker.setAlpha((float)1);
-                    spinner.setAlpha((float)1);
-                    disabler.setVisibility(View.INVISIBLE);
-                }
-                sendRequest(b);
+            public void onClick(View view) {
+                time = (timePicker.getCurrentHour()+":"+timePicker.getCurrentMinute());
+                Log.d(LOG_TAG,time);
+                alarmStatus.setTextColor(Color.GREEN);
+                alarmStatus.setText("Alarm set for "+time+"\nEarly Bird set to "+spinner.getSelectedItem());
+                timePicker.setEnabled(false);
+                timePicker.setVerticalScrollBarEnabled(false);
+                spinner.setEnabled(false);
+                timePicker.setAlpha((float)(0.6));
+                spinner.setAlpha((float)(0.6));
+                disabler.setVisibility(View.VISIBLE);
+                start.setEnabled(false);
+                stop.setEnabled(true);
+                sendRequest(true);
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmStatus.setTextColor(Color.DKGRAY);
+                alarmStatus.setText(R.string.alarmHintText);
+                timePicker.setEnabled(true);
+                timePicker.setVerticalScrollBarEnabled(true);
+                spinner.setEnabled(true);
+                timePicker.setAlpha((float)1);
+                spinner.setAlpha((float)1);
+                disabler.setVisibility(View.INVISIBLE);
+                start.setEnabled(true);
+                stop.setEnabled(false);
+                sendRequest(false);
             }
         });
     }
@@ -102,13 +110,17 @@ public class WakeUpLight extends AppCompatActivity {
                     public void onResponse(String response) {
                         if (!response.isEmpty()){
                             alarmStatus.setTextColor(Color.GREEN);
-                            alarmStatus.setText(response);
+                            String min = response.split(" ")[0];
+                            String hour = response.split(" ")[1];
+                            alarmStatus.setText("Alarm starts at: "+hour+":"+min);
                             timePicker.setEnabled(false);
                             timePicker.setVerticalScrollBarEnabled(false);
                             spinner.setEnabled(false);
                             timePicker.setAlpha((float)(0.6));
                             spinner.setAlpha((float)(0.6));
                             disabler.setVisibility(View.VISIBLE);
+                            stop.setEnabled(true);
+                            start.setEnabled(false);
                         }
                     }
                 },
@@ -135,7 +147,7 @@ public class WakeUpLight extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        alarmStatus.setText("Response: "+response);
+                        alarmStatus.setText(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -151,8 +163,8 @@ public class WakeUpLight extends AppCompatActivity {
                 Map<String,String> params = new HashMap<String, String>();
                 JSONObject jsnobj = new JSONObject();
                 try {
-                    jsnobj.put("hour",timePicker.getHour());
-                    jsnobj.put("minutes",timePicker.getMinute());
+                    jsnobj.put("hour",timePicker.getCurrentHour());
+                    jsnobj.put("minutes",timePicker.getCurrentMinute());
                     jsnobj.put("earlybird",spinner.getSelectedItem().toString().substring(0,2));
                     jsnobj.put("alarmset",alarmset);
                 } catch (JSONException e) {
