@@ -1,5 +1,6 @@
 package com.gecaj.arianit.myapplication.antithief;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -24,11 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AntiThief extends AppCompatActivity {
-
     private Button tv, lights;
     private WebView myWebView;
     private TextView state;
-    private String server_url = "http://192.168.2.107/php/json_thief.php";
+    private String raspIP;
+    private String server_url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,8 @@ public class AntiThief extends AppCompatActivity {
         setListeners();
     }
     private void init(){
+        raspIP = getIntent().getStringExtra("RASP_IP");
+        server_url = "http://"+raspIP+"/php/json_thief.php";
         myWebView = (WebView)findViewById(R.id.myWebView);
         state = (TextView)findViewById(R.id.textView11);
         tv = (Button)findViewById(R.id.tv);
@@ -90,6 +93,6 @@ public class AntiThief extends AppCompatActivity {
     }
 
     public void turnOFF(View view){
-        myWebView.loadUrl("http://192.168.2.107/php/kill.php/");
+        myWebView.loadUrl("http://"+raspIP+"/php/kill.php/");
     }
 }

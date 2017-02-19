@@ -11,11 +11,10 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,7 +24,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.gecaj.arianit.myapplication.MySingleton;
 import com.gecaj.arianit.myapplication.R;
 import com.gecaj.arianit.myapplication.colorpicker.ColorActivity;
-import com.gecaj.arianit.myapplication.effect.Effect;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,22 +31,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gecaj.arianit.myapplication.R.id.myWebView;
-
 public class Lightshow extends AppCompatActivity {
+    private String raspIP;
     private WebView myWebView;
     private final ColorActivity adj = new ColorActivity();
     private SurfaceView resultColorPicker;
     private SurfaceView surfaceView;
     private TextView state;
-    private ToggleButton tb;
-    private RadioButton rb1;
-    private RadioButton rb2;
-    private RadioButton rb3;
-    int red = 0, green = 0, blue = 0, white = 0;
+    private Button startShow, stopShow;
+    private RadioButton rb1, rb2, rb3;
+    int red = 255, green = 255, blue = 255, white = 255;
     double bright = 1.0;
     private int style;
-    private final String server_url = "http://192.168.2.107/php/json_lightshow.php";
+    private String server_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +53,21 @@ public class Lightshow extends AppCompatActivity {
         setListeners();
     }
     private void init(){
+        raspIP = getIntent().getStringExtra("RASP_IP");
+        server_url = "http://"+raspIP+"/php/json_lightshow.php";
         surfaceView = (SurfaceView)findViewById(R.id.surfaceView);
         myWebView  = (WebView)findViewById(R.id.webview);
         state = (TextView)findViewById(R.id.textView16);
-        tb = (ToggleButton)findViewById(R.id.lightshowSwitch);
+        startShow = (Button)findViewById(R.id.lightshowStart);
+        stopShow = (Button)findViewById(R.id.lightshowStop);
         rb1 = (RadioButton)findViewById(R.id.radioButton);
         rb2 = (RadioButton)findViewById(R.id.radioButton2);
         rb3 = (RadioButton)findViewById(R.id.radioButton3);
         rb1.setChecked(true);
         style = 1;
-
+        surfaceView.setBackgroundColor(Color.rgb((int)(red*bright*adj.getColorAdjust()[0]),
+                (int)(green*bright*adj.getColorAdjust()[1]),
+                (int)(blue*bright*adj.getColorAdjust()[2])));
     }
     private void setListeners(){
         surfaceView.setOnClickListener(new View.OnClickListener() {
@@ -103,27 +103,17 @@ public class Lightshow extends AppCompatActivity {
                 style = 3;
             }
         });
-        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        startShow.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    state.setText("Enjoy!");
-                    rb1.setEnabled(false);
-                    rb2.setEnabled(false);
-                    rb3.setEnabled(false);
-                    rb1.setAlpha((float)(0.6));
-                    rb2.setAlpha((float)(0.6));
-                    rb3.setAlpha((float)(0.6));
-                } else if(!b){
-                    state.setText(R.string.toggleOff);
-                    rb1.setEnabled(true);
-                    rb2.setEnabled(true);
-                    rb3.setEnabled(true);
-                    rb1.setAlpha(1);
-                    rb2.setAlpha(1);
-                    rb3.setAlpha(1);
-                }
+            public void onClick(View view) {
+                state.setText("Enjoy!");
                 sendRequest();
+            }
+        });
+        stopShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myWebView.loadUrl("http://"+raspIP+"/php/stop_lightshow.php");
             }
         });
     }
@@ -264,7 +254,7 @@ public class Lightshow extends AppCompatActivity {
         surfaceView.setBackgroundColor(Color.rgb((int)(red*bright*adj.getColorAdjust()[0]),
                 (int)(green*bright*adj.getColorAdjust()[1]),
                 (int)(blue*bright*adj.getColorAdjust()[2])));
-        myWebView.loadUrl("http://192.168.2.107/php/LED_OTF.php/?red="+(int)(red*bright)+
+        myWebView.loadUrl("http://"+raspIP+"/php/LED_OTF.php/?red="+(int)(red*bright)+
                 "&green="+(int)(green*bright)+
                 "&blue="+(int)(blue*bright)+
                 "&white="+white);

@@ -16,47 +16,51 @@
         android:visibility="gone" >
 
     </WebView>
-    <ToggleButton
-        android:text="ToggleButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/lightshowSwitch" />
 
     <TextView
         android:text="Start your own music and let the show begin!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/textView12"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textAlignment="center"
-        android:textColor="?attr/actionMenuTextColor" />
+        android:textColor="?attr/actionMenuTextColor"
+        android:layout_below="@+id/textView18"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lightshowSwitch">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
+
+        <TextView
+            android:text="Tap to chose your color:"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView18"
+            android:layout_above="@+id/linearLayout3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="18sp"
+            android:paddingBottom="5dp" />
 
         <SurfaceView
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:id="@+id/surfaceView" />
+            android:id="@+id/surfaceView"
+            android:layout_marginBottom="20dp" />
 
         <TextView
             android:text="@string/toggleOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView16"
-            android:textSize="18sp"
-            android:layout_marginBottom="5dp" />
+            android:textSize="18sp" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -82,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radioButton"
-                    android:layout_above="@+id/lightshowSwitch"
+                    android:layout_above="@+id/lightshowStart"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_weight="1" />
@@ -139,11 +143,12 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp">
 
             <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
+                android:text="Red(low) to\nWhite(high)"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView15"
                 android:layout_weight="1"
@@ -151,8 +156,8 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
+                android:text="Cool\nBlue"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView14"
                 android:layout_weight="1"
@@ -160,13 +165,42 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
+                android:text="Chosen\nColor"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView13"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linlayoutbtn"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:text="Stop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/lightshowStop"
+                android:layout_weight="1" />
+
+            <Button
+                android:text="Start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/lightshowStart"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>

@@ -13,6 +13,13 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/timePicker" />
 
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/disabler"
+        android:visibility="invisible"
+        android:clickable="false" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

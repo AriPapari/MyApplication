@@ -19,182 +19,180 @@
 
     </WebView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/relLayout1"
-        android:background="@drawable/borders">
-
-        <TextView
-            android:text="Saved Colors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:paddingLeft="5dp" />
-
-        <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/colorList"
-            android:divider="@color/transparent"
-            android:layout_height="80dp"
-            android:layout_below="@+id/textView4"
-            android:background="@drawable/listviewshape"/>
-
-        <Button
-            android:text="New Color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button5"
-            android:layout_alignBottom="@+id/colorList"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:onClick="startColorpicker"
-            android:background="#a5ffffff" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relLayout1"
-        android:id="@+id/linLayout1"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/borders">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-
-            <TextView
-                android:text="Effect Colors"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView5"
-                android:layout_weight="1"
-                android:paddingLeft="5dp" />
-
-            <CheckBox
-                android:text="Random Colors"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rndColCheck"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:id="@+id/effectColors"
-            android:layout_height="100dp"
-            android:layout_marginTop="2dp"
-            android:divider="@color/transparent"
-            android:background="@drawable/listviewshape"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linLayout1"
-        android:layout_marginTop="10dp"
-        android:weightSum="1"
-        android:background="@drawable/borders"
-        android:id="@+id/linearLayout">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-
-            <TextView
-                android:text="Effect Type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView6"
-                android:layout_weight="1"
-                android:paddingLeft="5dp" />
-
-            <CheckBox
-                android:text="Random Effect"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rndEffCheck"
-                android:layout_weight="1"
-                android:gravity="center|start" />
-        </LinearLayout>
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/effectListView"
-            android:layout_below="@+id/textView"
-            android:layout_marginTop="2dp"
-            android:layout_height="60dp"
-            android:background="@drawable/listviewshape"/>
-    </LinearLayout>
-
-    <Button
-        android:text="Start your Effect"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/button4"
-        android:onClick="sendRequest"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="7dp"
-        android:layout_above="@+id/button4">
-    <TextView
-        android:text="White"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/whiteBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView3" />
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/whiteBar"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="255" />
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:text="Speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/speedBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textView2" />
-
-        <SeekBar
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/button4"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/speedBar"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:max="100" />
+            android:id="@+id/relLayout1"
+            android:background="@drawable/borders"
+            android:layout_height="0dp"
+            android:layout_weight="1.2">
+
+            <TextView
+                android:text="Saved Colors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:paddingLeft="5dp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/colorList"
+                android:divider="@color/transparent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/textView4"
+                android:background="@drawable/listviewshape"/>
+
+            <Button
+                android:text="New Color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button5"
+                android:layout_alignBottom="@+id/colorList"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="startColorpicker"
+                android:background="#a5ffffff" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/relLayout1"
+            android:id="@+id/linLayout1"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/borders"
+            android:layout_weight="1.2">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+                <TextView
+                    android:text="Effect Colors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView5"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp" />
+
+                <CheckBox
+                    android:text="Random Colors"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rndColCheck"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:id="@+id/effectColors"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:divider="@color/transparent"
+                android:background="@drawable/listviewshape"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/linLayout1"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            android:background="@drawable/borders"
+            android:id="@+id/linearLayout"
+            android:layout_above="@+id/botLayout"
+            android:layout_weight=".8">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+
+                <TextView
+                    android:text="Effect Type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView6"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp" />
+
+                <CheckBox
+                    android:text="Random Effect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rndEffCheck"
+                    android:layout_weight="1"
+                    android:gravity="center|start"
+                    android:layout_marginTop="0dp" />
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/effectListView"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/listviewshape"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="7dp"
+            android:id="@+id/botLayout"
+            android:layout_weight=".8">
+        <TextView
+            android:text="White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3" />
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/whiteBar"
+            android:max="255"
+            android:layout_weight="1" />
+
+        <TextView
+            android:text="Speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/speedBar"
+                android:max="100"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <Button
+            android:text="Start your Effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button4"
+            android:onClick="sendRequest"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     </LinearLayout>
+
+    textView3
 
 
 </RelativeLayout>

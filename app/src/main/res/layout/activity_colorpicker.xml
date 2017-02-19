@@ -22,29 +22,34 @@
     </WebView>
 
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/listColor"
-        android:id="@+id/colorList"
-        android:divider="@color/transparent"
-        android:background="@drawable/listviewshape"/>
-
-
-    <SurfaceView
-        android:layout_height="50dp"
-        android:id="@+id/listColor"
-        android:layout_width="match_parent"
         android:layout_above="@+id/red"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/transparent" />
+        android:layout_below="@+id/listLayout"
+        android:background="@drawable/borders">
+
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:text="Current Color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView20" />
+
+        <SurfaceView
+            android:layout_height="match_parent"
+            android:id="@+id/listColor"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/transparent" />
+    </LinearLayout>
+
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_height="30dp"
         android:id="@+id/red"
         android:max="255"
@@ -89,7 +94,6 @@
         android:layout_above="@+id/white" />
     <SeekBar
         android:layout_width="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_height="30dp"
         android:id="@+id/white"
         android:max="255"
@@ -100,7 +104,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:progressBackgroundTint="@android:color/darker_gray"
-        android:background="@drawable/borders" />
+        android:background="@drawable/borders"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:text="Brightness:"
@@ -135,26 +141,58 @@
         android:id="@+id/buttonFrame">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/button"
             android:onClick="reset_LED"
             android:text="@string/reset"
             android:background="@android:drawable/btn_default"
-            android:layout_weight="58.49"
+            android:layout_weight="1"
             android:gravity="center" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/addColor"
             android:background="@android:drawable/btn_default"
             android:text="@string/add_color"
-            android:layout_weight="62.46"
+            android:layout_weight="1"
             android:gravity="center"
             android:onClick="add_Color" />
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/borders"
+        android:id="@+id/listLayout"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp">
+
+        <TextView
+            android:text="Saved colors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView19"
+            android:paddingLeft="5dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/listColor"
+            android:id="@+id/colorList"
+            android:divider="@color/transparent"
+            android:background="@drawable/listviewshape"
+            android:layout_below="@+id/textView19"
+            android:layout_height="153dp" />
     </LinearLayout>
 
 

@@ -8,5 +8,7 @@
         android:id="@+id/effectItem"
         android:text="Test"
         android:gravity="center"
-        android:background="@drawable/selecter"/>
+        android:background="@drawable/selecter"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 </LinearLayout>
