@@ -36,7 +36,7 @@ public class HexColorListAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        convertView = inflater.inflate(R.layout.color_list,parent,false);
+        convertView = inflater.inflate(R.layout.adapter_color_list,parent,false);
         String hexColor = hexColorList.get(position);
 
         SurfaceView resultColor = (SurfaceView) convertView.findViewById(R.id.listColor);

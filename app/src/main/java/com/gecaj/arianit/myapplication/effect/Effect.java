@@ -96,7 +96,7 @@ public class Effect extends AppCompatActivity {
         if(resultRGB.getCount() != 0) {
             while (resultRGB.moveToNext()) {
                 rgbColARL.add(new double[]{resultRGB.getDouble(1), resultRGB.getDouble(2), resultRGB.getDouble(3), resultRGB.getDouble(4), resultRGB.getDouble(5)});
-                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.color_list, rgbColARL));
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.adapter_color_list, rgbColARL));
             }
         }
 
@@ -146,14 +146,14 @@ public class Effect extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 hexColARL.add(toHexColor(new double[]{rgbColARL.get(i)[0], rgbColARL.get(i)[1], rgbColARL.get(i)[2]}));
                 //refresh list
-                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.color_list, hexColARL));
+                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.adapter_color_list, hexColARL));
             }
         });
         rgbColView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 rgbColARL.remove(i);
-                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.color_list, rgbColARL));
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this, R.layout.adapter_color_list, rgbColARL));
                 dbHandler.deleteData();
                 //tabelle neu füllen
                 for(int j = 0; j < rgbColARL.size(); j++)
@@ -176,7 +176,7 @@ public class Effect extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 hexColARL.remove(i);
-                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.color_list, hexColARL));
+                hexColView.setAdapter(new HexColorListAdapter(Effect.this,R.layout.adapter_color_list, hexColARL));
                 return true;
             }
         });
@@ -395,7 +395,7 @@ public class Effect extends AppCompatActivity {
                 rgbColARL.add(rgb);
                 dbHandler.addRGBcolor(rgb);
                 //refresh list
-                rgbColView.setAdapter(new ColorListAdapter(Effect.this,R.layout.color_list, rgbColARL));
+                rgbColView.setAdapter(new ColorListAdapter(Effect.this,R.layout.adapter_color_list, rgbColARL));
                 dialog.cancel();
                 white = red = green = blue = 0;
                 bright = 1.0;

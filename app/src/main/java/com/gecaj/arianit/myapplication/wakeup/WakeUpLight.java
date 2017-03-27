@@ -47,6 +47,7 @@ public class WakeUpLight extends AppCompatActivity {
         setContentView(R.layout.activity_wakeuplight);
         init();
         setListeners();
+        checkAlarm();
     }
     private void init(){
         raspIP = getIntent().getStringExtra("RASP_IP");
@@ -64,7 +65,6 @@ public class WakeUpLight extends AppCompatActivity {
         adapter = ArrayAdapter.createFromResource(this,R.array.spinner_options,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        checkAlarm();
     }
 
     private void setListeners(){

@@ -40,7 +40,7 @@ public class Lightshow extends AppCompatActivity {
     private TextView state;
     private Button startShow, stopShow;
     private RadioButton rb1, rb2, rb3;
-    int red = 255, green = 255, blue = 255, white = 255;
+    int red = 0, green = 0, blue = 0, white = 0;
     double bright = 1.0;
     private int style;
     private String server_url;
@@ -106,7 +106,6 @@ public class Lightshow extends AppCompatActivity {
         startShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                state.setText("Enjoy!");
                 sendRequest();
             }
         });
@@ -265,11 +264,13 @@ public class Lightshow extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        state.setText("Enjoy!");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        state.setText("Failed!");
                     }
                 }){
             @RequiresApi(api = Build.VERSION_CODES.M)

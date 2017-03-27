@@ -62,7 +62,7 @@ public class ColorActivity extends AppCompatActivity {
                 itemList.add(new double[]{result.getDouble(1),result.getDouble(2),result.getDouble(3),result.getDouble(4),result.getDouble(5)});
             }
         }
-        adapter = new ColorListAdapter(ColorActivity.this,R.layout.color_list, itemList);
+        adapter = new ColorListAdapter(ColorActivity.this,R.layout.adapter_color_list, itemList);
         colorList.setAdapter(adapter);
 
         //SeekBar ChangeListeners
@@ -231,7 +231,7 @@ public class ColorActivity extends AppCompatActivity {
         itemList.add(rgb);
         dbHandler.addRGBcolor(rgb);
         //refresh list
-        adapter = new ColorListAdapter(ColorActivity.this,R.layout.color_list, itemList);
+        adapter = new ColorListAdapter(ColorActivity.this,R.layout.adapter_color_list, itemList);
         colorList.setAdapter(adapter);
     }
 
